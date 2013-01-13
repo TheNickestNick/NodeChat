@@ -8,26 +8,7 @@ var port    = process.argv[2] || 1234
   , fs      = require('fs');
 
 io.set('log level', 0);
-
 app.use('/', express.static(__dirname));
-
-function handler(req, res) {
-
-}
-
-function sendFile(res, path) {
-  fs.readFile(__dirname + path,
-    function(err, data) {
-      if (err) {
-        res.writeHead(500);
-        res.end('Could not load chat client.');
-      }
-      else {
-        res.writeHead(200);
-        res.end(data);
-      }
-    });
-}
 
 function publishChatMessage(msg) {
    io.sockets.emit('chat-message', msg);
