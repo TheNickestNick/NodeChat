@@ -121,6 +121,7 @@
 				
 				el.append('<div class="text">' + message.text + '</div>');
 				$('#messages').append(el);
+				lastUsername = message.username;
 			}
 			
 			function stringToColor(username) {
