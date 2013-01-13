@@ -29,6 +29,8 @@
 	</head>
 	<body>
 		<script type="text/javascript">
+			var connectedAs, socket;
+			
 			$(function() {
 				$('#username-input').focus(function(){ $('#username-input').val('')});
 			
@@ -44,7 +46,8 @@
 				});
 				
 				$('#send').submit(function(evt) {
-					alert('woot');
+					socket.emit('chat-message', { username: connectedAs, text: $('#text').val()})
+					$('#text').val('');
 					evt.preventDefault();
 				});
 			});
@@ -53,9 +56,10 @@
 				$('#login').hide();
 				$('#chatroom').show();
 				$('#username-display em').text(username);
+				connectedAs = username;
 				
-				var sock = io.connect('/');
-				sock.on('chat-message', appendMessage);
+				socket = io.connect('/');
+				socket.on('chat-message', appendMessage);
 			}
 			
 			function appendMessage(message) {
