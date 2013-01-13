@@ -117,7 +117,7 @@
 			function connect(username) {
 				$('#login').hide();
 				$('#chatroom').show();
-				$('#username-display em').text(username);
+				$('#username-display strong').css('color', stringToColor(username)).text(username);
 				connectedAs = username;
 				
 				socket = io.connect('/');
@@ -196,7 +196,7 @@
 							<form id="send">
 								<textarea id="text">Type a message here and hit enter to send!</textarea>
 								<button type="submit">send</button>
-								<span id="username-display">connected as <em></em></span>
+								<span id="username-display">connected as <strong></strong></span>
 							</form>
 						</td>
 					</tr>
