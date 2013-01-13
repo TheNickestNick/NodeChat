@@ -10,21 +10,14 @@ var port    = process.argv[2] || 1234
 io.set('log level', 0);
 app.use('/', express.static(__dirname));
 
-function publishChatMessage(msg) {
-   io.sockets.emit('chat-message', msg);
-}
-
 io.sockets.on('connection', function(socket) {
   socket.on('user-enter', function(data) {
     console.log('user "%s" has joined the conversation', data.username);
     socket.broadcast.emit('user-enter', {username: data.username});
   });
   
-  socket.on('disconnect', function(data) {
-  });
-  
   socket.on('chat-message', function (data) {
-    publishChatMessage({ username: data.username, text: data.text });
+    io.sockets.emit('chat-message', { username: data.username, text: data.text });
   });
 });
 
