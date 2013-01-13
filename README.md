@@ -16,3 +16,5 @@ TODOs
 * Implement username changes.
 * Implement the ability to kick a user out of the chat. 
 * Implement chat persistence - i.e., when a new user joins, they should see the last N messages. 
+* Sounds (with the option to mute them) when a new user joins the chat.
+* Rooms
