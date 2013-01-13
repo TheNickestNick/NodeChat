@@ -7,6 +7,20 @@
 			#chatroom {
 				display: none;
 			}
+			
+			#messages {
+				height: 600px;
+				overflow: auto;
+			}
+			
+			.message .username {
+				width: 100px;
+				display: inline-block;
+			}
+			
+			.message .text {
+				display: inline-block;
+			}
 		</style>
 	</head>
 	<body>
@@ -28,7 +42,38 @@
 				$('#login').hide();
 				$('#chatroom').show();
 				$('#username-display em').text(username);
+				
+				addMessage({ username: 'nick', text: 'WAZZUP' });
 			}
+			
+			function addMessage(message) {
+				var color = stringToColor(message.username);
+				var el = $(
+					  '<div class="message">'
+					+   '<div class="username" style="color:' + color + '">'
+					+ 	  message.username 
+					+   '</div>'
+					+   '<div class="text">' 
+					+ 	  message.text 
+					+   '</div>'
+					+ '</div>');
+				$('#messages').append(el);
+			}
+			
+			function stringToColor(username) {
+				return '#' + (Math.abs(hash(username)).toString(16) + '000000').substr(0, 6);
+			}
+
+			function hash(str){
+				var h = 0, i, c;
+				if (str.length == 0) return h;
+				for (i = 0; i < str.length; i++) {
+					c = str.charCodeAt(i);
+					h = ((h<<5)-h)+c;
+					h = h & h; // Convert to 32bit integer
+				}
+				return h;
+			};
 		</script>
 		
 		<div id="login">
@@ -40,7 +85,7 @@
 			<p id="username-display">
 				connected as <em></em>
 			</p>
-			<div id="chat">
+			<div id="messages">
 			
 			</div>
 			<textarea id="comment"></textarea>
