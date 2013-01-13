@@ -6,7 +6,16 @@ var port = process.argv[2] || 1234;
 server.listen(port);
 
 function handler(req, res) {
-  fs.readFile(__dirname + '/client.html',
+  if (req.url === '/jquery-1.8.3.min.js')
+    sendFile(req, '/jquery-1.8.3.min.js');
+  )
+  else {
+    sendFile(req, '/client.html');
+  }
+}
+
+function sendFile(res, path) {
+  fs.readFile(__dirname + path,
     function(err, data) {
       if (err) {
         res.writeHead(500);
