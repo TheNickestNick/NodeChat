@@ -11,7 +11,6 @@ Features
 
 TODOs
 -----
-* Refactor out the code that sends static files. It was useful as a learning excercise, but it would be better to offload it to a middleware like Express.
 * Notify clients when a user leaves the chat.
 * Send new clients a list of users who are in the chat (requires us to keep track of a session for each connection on the server).
 * Implement username changes.
