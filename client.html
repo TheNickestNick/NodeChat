@@ -89,15 +89,16 @@
 				var clear = function(){ $(this).unbind('focus', clear).val('')};
 				$('#username-input, #text').focus(clear);
 			
-				$('#connect').click(function() {
+				$('#connect').submit(function(evt) {
+					evt.preventDefault();
 					var username = $('#username-input').val();
 					
 					if (!username) {
 						alert('You must enter a username.');
+						return;
 					}
-					else {
-						connect(username);
-					}
+					
+					connect(username);					
 				});
 				
 				$('#send').submit(function(evt) {
@@ -115,7 +116,7 @@
 			});
 			
 			function connect(username) {
-				$('#login').hide();
+				$('#connect').hide();
 				$('#chatroom').show();
 				$('#username-display strong').css('color', stringToColor(username)).text(username);
 				connectedAs = username;
@@ -177,13 +178,13 @@
 		</script>
 		<div id="main">
 			<h1>NodeChat</h1>
-			<div id="login">
+			<form id="connect">
 				<p>
 					Enter a username below and click "connect" to begin chatting!
 				</p>
 				<input type="text" id="username-input" value="username" />
-				<button type="button" id="connect">connect</button>
-			</div>
+				<button type="submit">connect</button>
+			</form>
 			<div id="chatroom">
 				<table>
 					<tr>
