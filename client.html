@@ -30,7 +30,7 @@
 			}
 			
 			#messages {
-				background: #f8f8f8;
+				background: #fafafa;
 				height: 600px;
 				width: 500px;
 				overflow: auto;
@@ -54,15 +54,22 @@
 				margin: 5px 0 0 0;
 			}
 			
+			#welcome {
+				margin: 2px;
+			}
+			
 			.message {
 				margin: 2px;
 			}
 			.message .username {
 				font-size: 12px;
+				margin-top: 6px;
+				font-weight: bold;
 			}
 			
 			.message .text {
 				font-size: 16px;
+				margin-left: 5px;
 			}
 		</style>
 	</head>
@@ -115,7 +122,7 @@
 				if (lastUsername !== message.username) {
 					var color = stringToColor(message.username);
 					el.append('<div class="username" style="color:' + color + '">'
-							 +  message.username 
+							 +  message.username + ':'
 							 +'</div>');
 				}
 				
@@ -152,7 +159,9 @@
 				<table>
 					<tr>
 						<td>
-							<div id="messages"></div>
+							<div id="messages">
+								<div id="welcome">Welcome to the chat room!</div>
+							</div>
 						</td>
 						<td>
 							<form id="send">
