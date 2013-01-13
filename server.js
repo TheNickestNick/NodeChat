@@ -35,6 +35,10 @@ function publishChatMessage(msg) {
 }
 
 io.sockets.on('connection', function(socket) {
+  socket.on('user-enter', function(data) {
+    socket.broadcast.emit('user-enter', {username: data.username});
+  });
+  
   socket.on('chat-message', function (data) {
     publishChatMessage({ username: data.username, text: data.text });
   });

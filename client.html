@@ -112,11 +112,19 @@
 				connectedAs = username;
 				
 				socket = io.connect('/');
-				socket.on('chat-message', appendMessage);
+				socket.emit('user-enter', { username: username });
+				socket.on('chat-message', userMessage);
+				socket.on('user-enter', function(data) {
+					systemMessage('User ' + data.username + ' has joined the chat.');
+				});
+			}
+			
+			function systemMessage(message) {
+				$('#messages').append('<div class="message system">' + message + '</div>');
 			}
 			
 			var lastUsername;
-			function appendMessage(message) {
+			function userMessage(message) {
 				var el = $('<div class="message"></div>');
 				
 				if (lastUsername !== message.username) {
