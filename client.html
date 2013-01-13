@@ -43,10 +43,11 @@
 				$('#chatroom').show();
 				$('#username-display em').text(username);
 				
-				addMessage({ username: 'nick', text: 'WAZZUP' });
+				var sock = io.connect('/');
+				sock.on('chat-message', appendMessage);
 			}
 			
-			function addMessage(message) {
+			function appendMessage(message) {
 				var color = stringToColor(message.username);
 				var el = $(
 					  '<div class="message">'

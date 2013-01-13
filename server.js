@@ -28,12 +28,12 @@ function sendFile(res, path) {
     });
 }
 
-function publishComment(comment) {
-   io.sockets.emit('comment', comment);
+function publishChatMessage(msg) {
+   io.sockets.emit('chat-message', msg);
 }
 
 io.sockets.on('connect', function(sock) {
-  sock.on('comment', function (data) {
-    publishComment({ username: data.username, text: data.text });
+  sock.on('chat-message', function (data) {
+    publishChatMessage({ username: data.username, text: data.text });
   });
 });
