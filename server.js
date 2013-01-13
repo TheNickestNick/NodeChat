@@ -2,6 +2,8 @@ var server = require('http').createServer(handler)
   , io     = require('socket.io').listen(server)
   , fs     = require('fs');
 
+io.set('log level', 0);
+  
 var port = process.argv[2] || 1234;
 server.listen(port);
 
