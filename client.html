@@ -74,6 +74,11 @@
 			.message.user-enter {
 				color: orange;
 			}
+			
+			.message.system {
+				color: red;
+				font-weight: bold;
+			}
 		</style>
 	</head>
 	<body>
@@ -119,10 +124,16 @@
 				socket.emit('user-enter', { username: username });
 				socket.on('chat-message', userMessage);
 				socket.on('user-enter', userEnter);
+				socket.on('system-message', systemMessage);
 			}
 			
 			function scrollToBottom() {
 				$('#messages').scrollTop($('#messages')[0].scrollHeight); 
+			}
+			
+			function systemMessage(data) {
+				$('#messages').append('<div class="message system">' + data.text + '</div>');
+				scrollToBottom();
 			}
 			
 			function userEnter(data) {
