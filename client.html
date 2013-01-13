@@ -62,7 +62,6 @@
 				margin: 2px;
 			}
 			.message .username {
-				font-size: 12px;
 				margin-top: 6px;
 				font-weight: bold;
 			}
@@ -70,6 +69,10 @@
 			.message .text {
 				font-size: 16px;
 				margin-left: 5px;
+			}
+			
+			.message.user-enter {
+				color: orange;
 			}
 		</style>
 	</head>
@@ -100,6 +103,7 @@
 				
 				$('#text').keypress(function(evt) {
 					if (evt.which === 13 && !evt.shiftKey) {
+						$('#send').submit();
 						evt.preventDefault();
 					}
 				});
@@ -114,29 +118,35 @@
 				socket = io.connect('/');
 				socket.emit('user-enter', { username: username });
 				socket.on('chat-message', userMessage);
-				socket.on('user-enter', function(data) {
-					systemMessage('User ' + data.username + ' has joined the chat.');
-				});
+				socket.on('user-enter', userEnter);
 			}
 			
-			function systemMessage(message) {
-				$('#messages').append('<div class="message system">' + message + '</div>');
+			function scrollToBottom() {
+				$('#messages').scrollTop($('#messages')[0].scrollHeight); 
+			}
+			
+			function userEnter(data) {
+				$('#messages').append('<div class="message user-enter"><strong style="color: ' + stringToColor(data.username) + '">' 
+									 + data.username 
+									 + '</strong> has joined the chat.</div>');
+				scrollToBottom();
 			}
 			
 			var lastUsername;
-			function userMessage(message) {
+			function userMessage(data) {
 				var el = $('<div class="message"></div>');
 				
-				if (lastUsername !== message.username) {
-					var color = stringToColor(message.username);
+				if (lastUsername !== data.username) {
+					var color = stringToColor(data.username);
 					el.append('<div class="username" style="color:' + color + '">'
-							 +  message.username + ':'
+							 +  data.username + ':'
 							 +'</div>');
 				}
 				
-				el.append('<div class="text">' + message.text + '</div>');
+				el.append('<div class="text">' + data.text + '</div>');
 				$('#messages').append(el);
-				lastUsername = message.username;
+				scrollToBottom();
+				lastUsername = data.username;
 			}
 			
 			function stringToColor(username) {
