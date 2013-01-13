@@ -32,8 +32,8 @@ function publishChatMessage(msg) {
    io.sockets.emit('chat-message', msg);
 }
 
-io.sockets.on('connect', function(sock) {
-  sock.on('chat-message', function (data) {
+io.sockets.on('connection', function(socket) {
+  socket.on('chat-message', function (data) {
     publishChatMessage({ username: data.username, text: data.text });
   });
 });
