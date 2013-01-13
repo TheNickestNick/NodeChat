@@ -1,9 +1,8 @@
-var app    = require('http')
-  , server = require('http').createServer(handler)
-  , io     = require('socket.io').listen(app)
+var server = require('http').createServer(handler)
+  , io     = require('socket.io').listen(server)
   , fs     = require('fs');
 
-app.listen(80);
+server.listen(80);
 
 function handler(req, res) {
   fs.readFile(__dirname + '/client.html',
