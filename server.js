@@ -18,3 +18,13 @@ function handler(req, res) {
       }
     });
 }
+
+function publishComment(comment) {
+   io.sockets.emit('comment', comment);
+}
+
+io.sockets.on('connect', function(sock) {
+  sock.on('comment', function (data) {
+    publishComment({ username: data.username, text: data.text });
+  });
+});
