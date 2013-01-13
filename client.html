@@ -12,7 +12,11 @@
 				height: 600px;
 				overflow: auto;
 			}
-			
+						
+			#send input[type='text'] {
+				width: 300px;
+			}
+						
 			.message .username {
 				width: 100px;
 				display: inline-block;
@@ -26,6 +30,8 @@
 	<body>
 		<script type="text/javascript">
 			$(function() {
+				$('#username-input').focus(function(){ $('#username-input').val('')});
+			
 				$('#connect').click(function() {
 					var username = $('#username-input').val();
 					
@@ -35,6 +41,11 @@
 					else {
 						connect(username);
 					}
+				});
+				
+				$('#send').submit(function(evt) {
+					alert('woot');
+					evt.preventDefault();
 				});
 			});
 			
@@ -77,20 +88,25 @@
 			};
 		</script>
 		
+		<h1>NodeChat</h1>
 		<div id="login">
-			<input type="text" id="username-input">username</input>
+			<p>
+				Enter a username below and click "connect" to begin chatting!
+			</p>
+			<input type="text" id="username-input" value="username" />
 			<button type="button" id="connect">connect</button>
 		</div>
 		<div id="chatroom">
-			<h1>NodeChat</h1>
 			<p id="username-display">
 				connected as <em></em>
 			</p>
 			<div id="messages">
 			
 			</div>
-			<textarea id="comment"></textarea>
-			<button type="button">send</button>
+			<form id="send">
+				<input type="text" value="" id="text" name="text" />
+				<button type="submit">send</button>
+			</form>
 		</div>
 	</body>
 </html>
