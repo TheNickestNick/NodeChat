@@ -1,21 +1,18 @@
 'use strict';
 
-var server = require('http').createServer(handler)
-  , io     = require('socket.io').listen(server)
-  , fs     = require('fs');
+var port    = process.argv[2] || 1234
+  , express = require('express')
+  , app     = express()
+  , server  = app.listen(port)
+  , io      = require('socket.io').listen(server)
+  , fs      = require('fs');
 
 io.set('log level', 0);
-  
-var port = process.argv[2] || 1234;
-server.listen(port);
+
+app.use('/', express.static(__dirname));
 
 function handler(req, res) {
-  if (req.url === '/jquery-1.8.3.min.js') {
-    sendFile(res, '/jquery-1.8.3.min.js');
-  }
-  else {
-    sendFile(res, '/client.html');
-  }
+
 }
 
 function sendFile(res, path) {
