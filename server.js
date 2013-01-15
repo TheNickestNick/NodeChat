@@ -23,7 +23,7 @@ io.sockets.on('authorization', function(data, accept) {
 var usernames = [];
 
 io.sockets.on('connection', function(socket) {
-  socket.on('user-enter', function(data) {
+  socket.on('user-connect', function(data) {
     if (usernames.indexOf(data.username) === -1) {
       socket.handshake.username = data.username;
       usernames.push(data.username);
@@ -32,9 +32,8 @@ io.sockets.on('connection', function(socket) {
       console.log('user "%s" has joined the conversation', data.username);
       return;
     }
-    
-    console.log('username "%s" was already in use', data.username);
-    socket.emit('username-in-use', {});
+
+    socket.emit('connect-fail', { reason: 'Username ' + data.username + ' is already in-use. Please choose a different username.' });
   });
   
   socket.on('chat-message', function (data) {

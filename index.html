@@ -117,10 +117,12 @@
 			
 			function connect(username) {				
 				socket = io.connect('/');
-				socket.emit('user-enter', { username: username });
+				socket.emit('user-connect', { username: username });
 				
-				socket.on('username-in-use', function(data) {
-					alert('That username is already in use, please enter another.');
+				socket.on('connect-fail', function(data) {
+					socket.disconnect();
+					socket = null;
+					alert(data.reason);
 				});
 				
 				socket.on('connect-success', function(data) {
