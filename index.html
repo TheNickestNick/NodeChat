@@ -102,7 +102,7 @@
 				});
 				
 				$('#send').submit(function(evt) {
-					socket.emit('chat-message', { username: connectedAs, text: $('#text').val()})
+					socket.emit('chat-message', { text: $('#text').val() })
 					$('#text').val('');
 					evt.preventDefault();
 				});

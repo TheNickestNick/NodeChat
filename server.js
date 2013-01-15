@@ -2,22 +2,33 @@
 
 var port    = process.argv[2] || 1234
   , express = require('express')
+  , connect = require('connect')
   , app     = express()
   , server  = app.listen(port)
   , io      = require('socket.io').listen(server)
   , fs      = require('fs');
 
 io.set('log level', 0);
-app.use('/', express.static(__dirname));
+
+app
+  .use(express.cookieParser())
+  .use(express.cookieSession({secret:'some kind of secret sauce'}))
+  .use('/', express.static(__dirname));
+
+io.sockets.on('authorization', function(data, accept) {
+  data.username = '';
+  accept(null, true);
+});
 
 io.sockets.on('connection', function(socket) {
   socket.on('user-enter', function(data) {
     console.log('user "%s" has joined the conversation', data.username);
+    socket.handshake.username = data.username;
     socket.broadcast.emit('user-enter', {username: data.username});
   });
   
   socket.on('chat-message', function (data) {
-    io.sockets.emit('chat-message', { username: data.username, text: data.text });
+    io.sockets.emit('chat-message', { username: socket.handshake.username, text: data.text });
   });
 });
 
