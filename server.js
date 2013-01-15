@@ -20,11 +20,21 @@ io.sockets.on('authorization', function(data, accept) {
   accept(null, true);
 });
 
+var usernames = [];
+
 io.sockets.on('connection', function(socket) {
   socket.on('user-enter', function(data) {
     console.log('user "%s" has joined the conversation', data.username);
-    socket.handshake.username = data.username;
-    socket.broadcast.emit('user-enter', {username: data.username});
+    
+    if (usernames.indexOf(data.username) === 0) {
+      socket.handshake.username = data.username;
+      usernames.push(data.username);
+      socket.broadcast.emit('user-enter', {username: data.username});
+      socket.emit('connect-success', {});
+      return;
+    }
+    
+    socket.emit('username-in-use', {});
   });
   
   socket.on('chat-message', function (data) {

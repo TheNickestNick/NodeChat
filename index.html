@@ -115,17 +115,24 @@
 				});
 			});
 			
-			function connect(username) {
-				$('#connect').hide();
-				$('#chatroom').show();
-				$('#username-display strong').css('color', stringToColor(username)).text(username);
-				connectedAs = username;
-				
+			function connect(username) {				
 				socket = io.connect('/');
 				socket.emit('user-enter', { username: username });
-				socket.on('chat-message', userMessage);
-				socket.on('user-enter', userEnter);
-				socket.on('system-message', systemMessage);
+				
+				socket.on('username-in-use', function(data) {
+					alert('That username is already in use, please enter another.');
+				});
+				
+				socket.on('connect-success', function(data) {
+					connectedAs = username;
+					$('#connect').hide();
+					$('#chatroom').show();
+					$('#username-display strong').css('color', stringToColor(username)).text(username);
+
+					socket.on('chat-message', userMessage);
+					socket.on('user-enter', userEnter);
+					socket.on('system-message', systemMessage);
+				});
 			}
 			
 			function scrollToBottom() {
