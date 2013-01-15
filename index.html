@@ -115,13 +115,12 @@
 				});
 			});
 			
-			function connect(username) {				
-				socket = io.connect('/');
+			function connect(username) {
+				socket = io.connect('/', {'force new connection': true});
 				socket.emit('user-connect', { username: username });
 				
 				socket.on('connect-fail', function(data) {
 					socket.disconnect();
-					socket = null;
 					alert(data.reason);
 				});
 				
