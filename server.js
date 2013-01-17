@@ -1,7 +1,6 @@
 'use strict';
 
 var port    = process.argv[2] || 1234
-  , express = require('express')
   , connect = require('connect')
   , app     = express()
   , server  = app.listen(port)
@@ -11,9 +10,9 @@ var port    = process.argv[2] || 1234
 io.set('log level', 0);
 
 app
-  .use(express.cookieParser())
-  .use(express.cookieSession({secret:'some kind of secret sauce'}))
-  .use('/', express.static(__dirname));
+  .use(connect.cookieParser())
+  .use(connect.session({secret:'i <3 penguins and sushi'}))
+  .use(connect.static(__dirname));
 
 io.sockets.on('authorization', function(data, accept) {
   data.username = '';

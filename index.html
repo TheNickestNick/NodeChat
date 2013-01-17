@@ -116,7 +116,7 @@
 			});
 			
 			function connect(username) {
-				socket = io.connect('/', {'force new connection': true});
+				socket = socket || io.connect();
 				socket.emit('user-connect', { username: username });
 				
 				socket.on('connect-fail', function(data) {
