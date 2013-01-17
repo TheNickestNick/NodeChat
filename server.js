@@ -2,22 +2,23 @@
 
 var port    = process.argv[2] || 1234
   , connect = require('connect')
-  , app     = express()
-  , server  = app.listen(port)
+  , sessionStore = new connect.session.MemoryStore
+  , server = connect()
+      .use(connect.cookieParser())
+      .use(connect.session({ secret: 'I <3 penguins and sushi!', key: 'sid', store: sessionStore }))
+      .use(connect.static(__dirname))
+      .listen(port)
   , io      = require('socket.io').listen(server)
   , fs      = require('fs');
 
 io.set('log level', 0);
 
-app
-  .use(connect.cookieParser())
-  .use(connect.session({secret:'i <3 penguins and sushi'}))
-  .use(connect.static(__dirname));
-
 io.sockets.on('authorization', function(data, accept) {
   data.username = '';
   accept(null, true);
 });
+
+console.log(connect.session.Store);
 
 var usernames = [];
 
